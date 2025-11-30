@@ -1,30 +1,25 @@
 pipeline {
     agent any
+    
+    tools {
+        maven 'Maven'      // this must match the Maven name configured in Jenkins → Global Tool Configuration
+    }
 
     environment {
-        // Variables defined here can be used by any stage
-        NEW_VERSION = '1.3.0'
+        // Environment variable accessible across all stages
+        NEW_VERSION = "1.3.0"
     }
 
     stages {
-
-        stage('build') {
+        stage('Build') {
             steps {
-                echo 'Building Project'
-                // Using environment variable
-                echo "Building version ${NEW_VERSION}"
-            }
-        }
+                echo "Building Project..."
 
-        stage('test') {
-            steps {
-                echo "Testing version ${NEW_VERSION}"
-            }
-        }
+                // Print environment variable
+                echo "Building version is: ${NEW_VERSION}"
 
-        stage('deploy') {
-            steps {
-                echo "Deploying version ${NEW_VERSION}"
+                // Run Maven build
+                sh "mvn install"      // executes mvn install command
             }
         }
     }
