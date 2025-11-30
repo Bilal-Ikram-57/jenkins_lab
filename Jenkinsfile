@@ -1,45 +1,31 @@
-flag = true
-
 pipeline {
     agent any
+
+    environment {
+        // Variables defined here can be used by any stage
+        NEW_VERSION = '1.3.0'
+    }
 
     stages {
 
         stage('build') {
             steps {
                 echo 'Building Project'
+                // Using environment variable
+                echo "Building version ${NEW_VERSION}"
             }
         }
 
         stage('test') {
-            when {
-                expression {
-                    // condition — similar to your screenshot
-                    flag == true
-                }
-            }
             steps {
-                echo 'Running Test Stage'
-                // change flag like in your screenshot
-                flag = false
+                echo "Testing version ${NEW_VERSION}"
             }
         }
 
         stage('deploy') {
             steps {
-                echo 'Deploying Project'
+                echo "Deploying version ${NEW_VERSION}"
             }
-        }
-    }
-
-    post {
-
-        always {
-            echo 'Post build condition running'
-        }
-
-        failure {
-            echo 'Post Action if Build Failed'
         }
     }
 }
